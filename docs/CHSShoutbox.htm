@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de">
+ <head>
+  <title>CHS &ndash; Shoutbox: Readme</title>
+  <meta name="author" content="Chrissyx" />
+  <meta name="copyright" content="&copy; 2006 - 2010 by Chrissyx" />
+  <meta name="keywords" content="Shoutbox, CHS, readme, liesmich, Chrissyx" />
+  <meta name="description" content="Readme for the shoutbox from CHS" />
+  <meta name="robots" content="all" />
+  <meta name="revisit-after" content="28 days" />
+  <meta name="generator" content="Notepad 4.10.1998" />
+  <meta http-equiv="Content-Language" content="de-DE" />
+  <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta http-equiv="Content-Script-Type" content="text/javascript" />
+  <link rel="stylesheet" media="all" href="../chscore/styles/style.css" />
+ </head>
+ <body>
+  <h1>Chrissyx Homepage Scripts &ndash; Shoutbox</h1>
+  <h2>Version: 2.0</h2>
+  <h3><a href="#ENGLISH">ENGLISH - CLICK HERE!</a></h3>
+
+  <h4>Inhalt</h4>
+  <ul>
+   <li><a href="#de_intro">Vorwort</a></li>
+   <li><a href="#de_reqs">Vorraussetzungen</a></li>
+   <li><a href="#de_install">Installation</a></li>
+   <li><a href="#de_update">Update von 0.9.11 auf 2.0</a></li>
+   <li><a href="#de_faq">FAQ</a></li>
+   <li><a href="#de_credits">Credits</a></li>
+  </ul><br />
+
+  <h4 id="de_intro">Vorwort</h4>
+  <p>Die multilinguale Shoutbox ist schnell, schlank und benutzerfreundlich. Alles ist einstellbar; von der Anzahl der gezeigten Shouts, &uuml;ber Anzahl der Smileys (auch pro Reihe!) bis hin zu den Speicherorten der internen Systemdateien. Archivierte Shouts werden separat gespeichert f&uuml;r eine besonders schnelle Anzeige der neusten Shouts und optional durch eine ebenfalls einstellbare Seitenanzeige im Archiv angezeigt. Die Box ist durchgehend schlank gehalten, d.h. zu lange Links werden verk&uuml;rzt dargestellt und ebenfalls lange W&ouml;rter werden bei Bedarf mit Trennstrich(en) umgebrochen. Smileys werden mit der Box selber oder &uuml;ber ein <a href="http://www.tritanium-scripts.com/" target="_blank">TBB1 Forum</a> verwaltet. Alle Einstellungen k&ouml;nnen jederzeit in der eigenen Adminoberfl&auml;che eingesehen und ver&auml;ndert werden; gecachte Einstellungen werden dabei automatisch erneuert und nach Logout sofort wirksam.</p><br />
+
+  <h4 id="de_reqs">Vorraussetzungen</h4>
+  <ul>
+   <li>PHP ab 5.1</li>
+   <li>chmod-f&auml;higer Webspace</li>
+  </ul><br />
+
+  <h4 id="de_install">Installation</h4>
+  <p>Lade in dem Ordner, wo deine Webseite ist und auf welcher die Shoutbox zum Einsatz kommen soll, den Ordner &quot;chscore&quot; samt Inhalt hoch. Falls der Ordner bereits existiert, k&ouml;nnen vorhandene Dateien ersetzt werden. Rufe danach deine Seite auf und h&auml;nge ein <code>?module=CHSShoutboxAdmin</code> an die Adresse an. Folge dann den Anweisungen.</p><br />
+
+  <h4 id="de_update">Update von 0.9.11 auf 2.0</h4>
+  <p>Sichere dir die &quot;shoutbox.dat&quot; und &quot;shoutarchiv.dat&quot; aus dem &quot;shoutbox&quot;-Ordner. L&ouml;sche danach diesen Ordner, die &quot;shoutbox.php&quot; und den damals eingef&uuml;gten Code auf deiner Seite. Installiere dann die neue Version wie oben beschrieben.<br />
+     Danach m&uuml;ssen die gesicherten Shouts erst in ein neues Format konvertiert werden: Lade dazu den Ordner &quot;import&quot; (<b>nur</b> mit der enthaltenen &quot;shoutbox.php&quot;) dort hoch, wo sich bereits der Ordner &quot;chscore&quot; befindet. Rufe danach die &quot;shoutbox.php&quot; auf und konvertiere die beiden DAT-Dateien. Lade die umgewandelten Dateien in den Ordner &quot;chscore/data/&quot; hoch und ersetzte die vorhandenen. Eventuell m&uuml;ssen die Namen angepasst werden, je nach gemachter Einstellung. Den Ordner &quot;import&quot; im Anschluss wieder l&ouml;schen.</p><br />
+
+  <h4 id="de_faq">FAQ</h4>
+  <ul>
+   <li style="margin-bottom:10px;">Wie kann ich meine Shoutbox verwalten?<br />
+       Rufe, wie schon bei der Installation auch, deine Seite mit dem Anh&auml;ngsel <code>?module=CHSShoutboxAdmin</code> auf und folge den Anweisungen.</li>
+   <li style="margin-bottom:10px;">Ich habe mein Passwort vergessen!<br />
+       Begib dich ganz normal zum Login, dort kannst Du dir auch ein neues Passwort zu schicken lassen. Das alte bleibt weiterhin g&uuml;ltig, bis Du dich mit dem neuen eingeloggt hast.</li>
+   <li style="margin-bottom:10px;">Ich erhalte die Meldung &quot;ERROR: Can't create config file!&quot;&#8253;<br />
+       Es werden Schreibrechte ben&ouml;tigt, die Du in so einem Fall wohl selber setzen musst. &Auml;ndere mit deinem FTP Programm per chmod-Befehl die Rechte auf <code>755</code> f&uuml;r folgende Ordner:
+       <ul>
+        <li>chscore/config/</li>
+        <li>chscore/data/</li>
+       </ul></li>
+   <li style="margin-bottom:10px;">Kann ich die Shoutbox auch in andere Sprachen &uuml;bersetzen?<br />
+       Aber sicher: Kopiere dir die passende INI-Datei aus dem Ordner &quot;chscore/languages/&quot; (z.B. de-DE.CHSShoutbox.ini) und benenne das offizielle Sprachk&uuml;rzel im Dateinamen in die jeweilige Sprache um. Z.B. &quot;fr-FR.CHSShoutbox.ini&quot; f&uuml;r Franz&ouml;sisch aus Frankreich oder &quot;nl.CHSShoutbox.ini&quot; f&uuml;r allgemein Niederl&auml;ndisch. &Uuml;bersetzte dann die Texte in den Anf&uuml;hrungszeichen und achte dabei auf die Hinweise am Anfang der Datei. Wenn Du eine vollst&auml;ndige &Uuml;bersetzung hast, lade sie in den &quot;chscore/languages/&quot;-Ordner und w&auml;hle sie ggf. im Sprachmen&uuml; der Administration aus. Bitte schick sie mir auch, so dass ich anderen diese ebenfalls zur Verf&uuml;gung stellen kann! :)</li>
+   <li style="margin-bottom:10px;">Wie ist das mit den Smileys in V2.0?<br />
+       Keine Sorge, die Shoutbox bringt jetzt eine eigene Smiley-Verwaltung mit. Nutzung von Smileys aus dem TBB1 wird weiterhin unterst&uuml;tzt.</li>
+   <li>Meine Frage wurde nicht beantwortet!<br />
+       Dann besuch mein Forum unter <a href="http://www.chrissyx-forum.de.vu/" target="_blank">http://www.chrissyx-forum.de.vu/</a> oder schreib mir eine E-Mail: <a href="mailto:chris@chrissyx.com">chris@chrissyx.com</a></li>
+  </ul><br />
+
+  <h4 id="de_credits">Credits</h4>
+  <p>&copy; 2006 - 2010 by Chrissyx<br />
+  Powered by V4 LeetCore Technology<br />
+  <a href="http://www.chrissyx.de.vu/" target="_blank">http://www.chrissyx.de(.vu)/</a><br />
+  <a href="http://www.chrissyx.com/" target="_blank">http://www.chrissyx.com/</a></p>
+
+  <hr id="ENGLISH"/>
+
+  <h4>Content</h4>
+  <ul>
+   <li><a href="#en_reqs">Requirements</a></li>
+   <li><a href="#en_install">Installation</a></li>
+   <li><a href="#en_faq">FAQ</a></li>
+   <li><a href="#en_credits">Credits</a></li>
+  </ul><br />
+
+  <h4 id="en_reqs">Requirements</h4>
+  <ul>
+   <li>PHP 5.1 or higher</li>
+   <li>chmod-able webspace</li>
+  </ul><br />
+
+  <h4 id="en_install">Installation</h4>
+  <p>Upload in that directory, in which your website is (and you're planning to use the shoutbox), the folder &quot;chscore&quot; including its contents. Point your browser to your website and attach <code>?module=CHSShoutboxAdmin</code> to the address. Follow the instructions.</p><br />
+
+  <h4 id="en_faq">FAQ</h4>
+  <ul>
+   <li style="margin-bottom:10px;">How to manage my shoutbox?<br />
+       Just point your browser to your website by adding <code>?module=CHSCounterAdmin</code> to the address, as you did during the installation and follow the instructions.</li>
+   <li style="margin-bottom:10px;">I've forgot my password!<br />
+       Go to the login form, you can request a new password there. The old one is still valid until you log in with the new password.</li>
+   <li style="margin-bottom:10px;">I'm getting a message &quot;ERROR: Can't create config file!&quot;&#8253;<br />
+       Set with your FTP program and chmod command the permisson to <code>755</code> for these folders:
+       <ul>
+        <li>chscore/config/</li>
+        <li>chscore/data/</li>
+       </ul></li>
+   <li style="margin-bottom:10px;">Is it possible to translate the shoutbox to another language?<br />
+       Of course, copy an appropriate INI file (e.g. en-US.CHSShoutbox.ini) from the &quot;chscore/languages/&quot; folder and rename the official language code of the filename to the corresponding of the desired language. Like &quot;fr-FR.CHSShoutbox.ini&quot; for French in France or &quot;nl.CHSShoutbox.ini&quot; for general Dutch. Start translating the strings between the quotation marks and check the hints at the beginning of the file. By having a complete translation, upload it to the &quot;chscore/languages/&quot; folder and if applicable choose it from the language menu in the administration panel. Please send it also to me for providing it to other user! :)</li>
+   <li style="margin-bottom:10px;">My question isn't answered here!<br />
+       Please visit my board at <a href="http://www.chrissyx.com/forum/" target="_blank">http://www.chrissyx.com/forum/</a> or write me an e-mail: <a href="mailto:chris@chrissyx.com">chris@chrissyx.com</a></li>
+  </ul><br />
+
+  <h4 id="en_credits">Credits</h4>
+  <p>&copy; 2006 - 2010 by Chrissyx<br />
+  Powered by V4 LeetCore Technology<br />
+  <a href="http://www.chrissyx.de.vu/" target="_blank">http://www.chrissyx.de(.vu)/</a><br />
+  <a href="http://www.chrissyx.com/" target="_blank">http://www.chrissyx.com/</a></p>
+ </body>
+</html>

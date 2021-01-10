@@ -1,0 +1,76 @@
+/* Zentrale Formate, Element-spezifisch */
+
+body
+{
+ background-color:#99CCFF;
+ color:#000000;
+ font-family:Arial,sans-serif;
+}
+
+button, input, textarea, select
+{
+ border:2px solid #000000;
+}
+
+div.stats
+{
+ text-align:center;
+ width:99%;
+}
+
+img, input[type=radio], input[type=checkbox]
+{
+ border:none;
+}
+
+input[type=file]
+{
+ background-color:#FFFFFF; /* IE8 fix */
+}
+
+label
+{
+ cursor:pointer;
+}
+
+/* Pseudoklassen */
+
+a:active
+{
+ background-color:#FFFF00;
+ font-weight:bold;
+ text-decoration:underline;
+}
+
+a:hover, a:focus
+{
+ background-color:#FFFF00;
+ text-decoration:underline;
+}
+
+button:hover, input:hover, textarea:hover, select:hover
+{
+ border:2px dotted #000000;
+}
+
+/* Allgemeine Individualformate */
+
+.b
+{
+ font-weight:bold;
+}
+
+.center
+{
+ text-align:center;
+}
+
+.green
+{
+ color:#008000;
+}
+
+.red
+{
+ color:#FF0000;
+}
