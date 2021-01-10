@@ -6,169 +6,274 @@
 #http://www.chrissyx.de(.vu)/                                       #
 #####################################################################
 
-$action = (!$_POST['action']) ? $_GET['action'] : $_POST['action'];
+/**
+ * Generiert den XHTML Head für jede interne Seite der Shoutbox und sendet den passenden Content-Type, wenn der Browser XML unterstützt.
+ * 
+ * @author Chrissyx
+ * @copyright Chrissyx
+ * @param string Der Titel des Dokuments
+ * @param string Metatag für Schlüsselwörter
+ * @param string Metatag für Beschreibung
+ * @param string Weitere optionale XHTML Tags im Head
+ */
+function headBox($title, $keywords, $description, $sonstiges=null)
+{
+ if(stristr($_SERVER['HTTP_ACCEPT'], 'application/xhtml+xml')) header('Content-Type: application/xhtml+xml');
+ echo('<?xml version="1.0" encoding="ISO-8859-1" standalone="no" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de">
+ <head>
+  <title>' . $title . '</title>
+  <meta name="author" content="Chrissyx" />
+  <meta name="copyright" content="Chrissyx" />
+  <meta name="keywords" content="' . $keywords . '" />
+  <meta name="description" content="' . $description . '" />
+  <meta name="robots" content="all" />
+  <meta name="revisit-after" content="7 days" />
+  <meta name="generator" content="Notepad 4.10.1998" />
+  <meta http-equiv="content-language" content="de" />
+  <meta http-equiv="content-type" content="application/xhtml+xml; charset=ISO-8859-1" />
+  <meta http-equiv="content-style-type" content="text/css" />
+  <meta http-equiv="content-script-type" content="text/javascript" />
+');
+  if($sonstiges) echo("  $sonstiges\n");
+  echo(' </head>
+ <body>
+');
+}
+
+//Caching
+if(file_exists('shoutbox/settings.php') && (filemtime('shoutbox/settings.php') > filemtime('shoutbox/settings.dat'))) include('shoutbox/settings.php');
+else
+{
+ //Config: Shoutbox, Anzahl Archiv, Archiv, Passwort, Anzahl, TBB Smilies, Smilies Anzahl, Smilies Anzahl Reihe, Redir nach Login
+ list($shoutboxdat, $shoutarchivmax, $shoutarchivdat, $shoutpwdat, $shoutmax, $smilies, $smiliesmax, $smiliesmaxrow, $redir) = @array_map('trim', file('shoutbox/settings.dat')) or die('<b>ERROR:</b> Keine Einstellungen gefunden!');
+ $forum = explode('/', $smilies);
+ $forum = implode('/', array_slice($forum, 0, count($forum)-2));
+ $temp = fopen('shoutbox/settings.php', 'w');
+ fwrite($temp, "<?php\n //Auto-generated config!\n \$shoutboxdat = '$shoutboxdat';\n \$shoutarchivmax = " . (($shoutarchivmax) ? $shoutarchivmax : "''") . ";\n \$shoutarchivdat = '$shoutarchivdat';\n \$shoutpwdat = '$shoutpwdat';\n \$shoutmax = $shoutmax;\n \$smilies = file('$smilies');\n \$smiliesmax = " . (($smiliesmax) ? $smiliesmax : "''") . ";\n \$smiliesmaxrow = " . (($smiliesmaxrow) ? $smiliesmaxrow : "''") . ";\n \$redir = '$redir';\n \$forum = '$forum';\n?>");
+ fclose($temp);
+ $smilies = file($smilies);
+}
+
+//$action laden
+$action = (!$_GET['action']) ? $_POST['action'] : $_GET['action'];
 session_start();
-$shoutboxdat = "dats/shoutbox.dat";
-$shoutarchivdat = "dats/shoutarchiv.dat";
-$shoutpwdat = "dats/pw.dat";
-$shoutmax = 5;
-$smilies = file("forum/vars/smilies.var");
+
+//Mehr Smilies
+if($action == 'smilies')
+{
+ headBox('CHS - Shoutbox: Mehr Smilies', 'Shoutbox, CHS, Mehr Smilies, Chrissyx', 'Mehr Smilies der Shoutbox von CHS');
+ $size = count($smilies);
+ for($i=0; $i<$size; $i++)
+ {
+  $smilie = explode("\t", $smilies[$i]);
+  if(($i % $smiliesmaxrow) == 0) echo("  <br />\n");
+  echo("  <a href=\"javascript:opener.document.getElementById('shoutboxform').shoutbox.value += ' " . $smilie[1] . " '; opener.document.getElementById('shoutboxform').shoutbox.focus();\"><img src=\"$forum/" . $smilie[2] . '" style="border:none" alt="' . $smilie[1] . "\" /></a>\n");
+ }
+ die(" </body>\n</html>");
+}
 
 //Admin Login
-if ($action == "admin")
+elseif($action == 'admin')
 {
- $pw = @file($shoutpwdat) or die("<b>ERROR:</b> Passwort noch nicht angelegt!");
+ $pw = @file_get_contents($shoutpwdat) or die('<b>ERROR:</b> Passwort noch nicht angelegt!');
  $_SESSION['dispall'] = false;
- if (md5($_POST['shoutpw']) == $pw[0])
+ if(md5($_POST['shoutpw']) == $pw)
  {
   $_SESSION['shoutpw'] = md5($_POST['shoutpw']);
   unset($_POST['shoutpw']);
-  $_SESSION['dispall'] = true;
-  @header("Location: http://" . $_SERVER['SERVER_NAME'] . "/");
-  die("Eingeloggt! <a href=\"http://" . $_SERVER['SERVER_NAME'] . "/\">Zurück zur Startseite...</a>");
+  if($_POST['edit'] == 'box') $redir = 'shoutbox/index.php';
+  else $_SESSION['dispall'] = true;
+  if($redir)
+  {
+   @header('Location: ' . $redir);
+   die('Eingeloggt! <a href="' . $redir . '">Zurück zur Seite...</a>');
+  }
  }
  else
  {
+  headBox('CHS - Shoutbox: Login', 'Shoutbox, CHS, Login, Chrissyx', 'Login der Shoutbox von CHS', '<link rel="stylesheet" media="all" href="shoutbox/style.css" />');
   ?>
-
- CHS - ShoutBox - LogIn<br />
- <form action="<?=$_SERVER['PHP_SELF']?>" method="post">
- Bitte Passwort angeben: <input type="password" name="shoutpw"><br />
- <input type="submit" value="Einloggen">
- <input type="hidden" name="action" value="admin">
- </form>
-
-  <?php
-  exit();
+  <span style="font-size:large;">CHS - Shoutbox: Login</span><br />
+  <form action="<?=$_SERVER['PHP_SELF']?>" method="post">
+  Bitte Passwort angeben: <input type="password" name="shoutpw" <?php if($_POST['shoutpw']) echo('style="border-color:#FF0000;" /><br />
+  <span style="color:#FF0000; font-weight:bold;">&raquo; Falsches Passwort!</span><br '); ?>/><br />
+  <input type="radio" name="edit" value="shouts" checked="checked" />Shouts verwalten<br />
+  <input type="radio" name="edit" value="box" />Box verwalten<br />
+  <input type="submit" value="Einloggen" />
+  <input type="hidden" name="action" value="admin" />
+  </form>
+ <?php
+  die("</body>\n</html>");
  }
 }
 
 //Admin Logout
-elseif ($action == "shoutout") unset($_SESSION['shoutpw'], $_SESSION['dispall']);
+elseif($action == 'shoutout') unset($_SESSION['shoutpw'], $_SESSION['dispall']);
 
 //Archiv aufrufen
-if ($action == "archiv")
+if($action == 'archiv')
 {
- $temp = file($shoutarchivdat);
- if (!$temp) echo("Archiv ist leer!");
- if ($_SESSION['dispall']) foreach($temp as $key => $value)
-                           {
-                            $value = explode("\t", $value);
-                            echo("<strong>" . $value[3] . "</strong> am <strong>" . $value[1] . "</strong> um <strong>" . $value[2] . "</strong>:<br />\n" . $value[4] . "<br />\nIP: <strong>" . $value[0] . "</strong> - [ <a href=\"" . $_SERVER['PHP_SELF'] . "?action=deleteold&id=$key\">Delete</a> ]<br />\n<hr>");
-                           }
- else foreach($temp as $value)
+ headBox('CHS - Shoutbox: Archiv', 'Shoutbox, CHS, Archiv, Chrissyx', 'Archiv der Shoutbox von CHS');
+ if(!$temp = file($shoutarchivdat)) die("  Archiv ist leer!\n </body>\n</html>");
+ if($_SESSION['dispall']) foreach($temp as $key => $value)
+                          {
+                           $value = explode("\t", $value);
+                           echo('  <strong>' . $value[3] . '</strong> am <strong>' . $value[1] . '</strong> um <strong>' . $value[2] . "</strong>:<br />\n  " . $value[4] . "<br />\n  <div style=\"white-space:nowrap;\">IP: <strong>" . $value[0] . '</strong> - [ <a href="' . $_SERVER['PHP_SELF'] . "?action=deleteold&amp;id=$key\">Delete</a> ]</div>\n  <hr noshade=\"noshade\" />\n");
+                          }
+ else if($shoutarchivmax)
       {
-       $value = explode("\t", $value);
-       echo("<strong>" . $value[3] . "</strong> am <strong>" . $value[1] . "</strong> um <strong>" . $value[2] . "</strong>:<br />\n" . $value[4] . "<br />\n<hr>");
+       $size = count($temp);
+       $_GET['page'] = ($_GET['page'] < 0) ? 0 : (($_GET['page']*$shoutarchivmax >= $size) ? $_GET['page']-1 : $_GET['page']);
+       $start = $_GET['page']*$shoutarchivmax;
+       $end = $start+$shoutarchivmax;
+       echo('  <div style="text-align:center;"><strong><a href="' . $_SERVER['PHP_SELF'] . '?action=archiv&amp;page=' . ($_GET['page']-1) . '">&laquo; Zurück</a> - Seite ' . ($_GET['page']+1) . ' - <a href="' . $_SERVER['PHP_SELF'] . '?action=archiv&amp;page=' . ($_GET['page']+1) . "\">Vor &raquo;</a></strong><br />\n  <strong>Zeige " . ($start+1) . ' bis ' . (($end > $size) ? $size : $end) . " von $size Shouts gesamt:</strong></div><br />\n");
+       for($i=$start; $i<$end; $i++)
+       {
+        if(!$temp[$i]) break;
+        $value = explode("\t", $temp[$i]);
+        echo('  <strong>' . $value[3] . '</strong> am <strong>' . $value[1] . '</strong> um <strong>' . $value[2] . "</strong>:<br />\n  " . $value[4] . "<br />\n  <hr noshade=\"noshade\" />\n");
+       }
+       echo('  <div style="text-align:center;"><strong><a href="' . $_SERVER['PHP_SELF'] . '?action=archiv&amp;page=' . ($_GET['page']-1) . '">&laquo; Zurück</a> - Seite ' . ($_GET['page']+1) . ' - <a href="' . $_SERVER['PHP_SELF'] . '?action=archiv&amp;page=' . ($_GET['page']+1) . "\">Vor &raquo;</a></strong></div>\n");
       }
+      else foreach($temp as $value)
+           {
+            $value = explode("\t", $value);
+            echo('  <strong>' . $value[3] . '</strong> am <strong>' . $value[1] . '</strong> um <strong>' . $value[2] . "</strong>:<br />\n  " . $value[4] . "<br />\n  <hr noshade=\"noshade\" />\n");
+           }
+ echo(" </body>\n</html>");
 }
 
 //Aus Archiv löschen
-elseif ($action == "deleteold")
+elseif($action == 'deleteold')
 {
- $pw = @file($shoutpwdat) or die("<b>ERROR:</b> Passwort noch nicht angelegt!");
- if ($_SESSION['shoutpw'] == $pw[0] && $_SESSION['dispall'])
+ $pw = @file_get_contents($shoutpwdat) or die('<b>ERROR:</b> Passwort noch nicht angelegt!');
+ if(($_SESSION['shoutpw'] == $pw) && $_SESSION['dispall'])
  {
   $towrite = file($shoutarchivdat);
-  if (!$towrite[$_GET['id']]) die("<b>ERROR:</b> Shout nicht gefunden!");
+  if(!$towrite[$_GET['id']]) die('<b>ERROR:</b> Shout nicht gefunden!');
   array_splice($towrite, $_GET['id'], 1);
-  $temp = fopen($shoutarchivdat, "w");
-  fwrite($temp, implode("", $towrite));
+  $temp = fopen($shoutarchivdat, 'w');
+  fwrite($temp, implode('', $towrite));
   fclose($temp);
-  @header("Location: " . $_SERVER['PHP_SELF'] . "?action=archiv");
-  die("Eintrag gelöscht! <a href=\"" . $_SERVER['PHP_SELF'] . "?action=archiv\">Zurück zum Archiv...</a>");
+  @header('Location: ' . $_SERVER['PHP_SELF'] . '?action=archiv');
+  die('Eintrag gelöscht! <a href="' . $_SERVER['PHP_SELF'] . '?action=archiv">Zurück zum Archiv...</a>');
  }
- else echo("<b>ERROR:</b> Keine Adminrechte!");
+ else echo('<b>ERROR:</b> Keine Adminrechte!');
 }
 
 //Formular zeigen
 else
 {
+ if($_POST['name']) $_SESSION['shoutName'] = $_POST['name'];
  ?>
 
-<a name="shoutbox"></a>
-<form name="shoutboxform" action="<?=$_SERVER['PHP_SELF']?>#shoutbox" method="post" onMouseOver="canShout();">
-<div class="nowrap">Nick: <input type="text" name="cookieName" size="17" value="<?=$_SESSION['cookieName']?>" onChange="canShout();"><br />
-<textarea name="shoutbox" rows="3" cols="18"></textarea><br/ >
-<?php
-for ($i=0; $i<=19; $i++)
+<script type="text/javascript">
+
+/*******************************************************************\
+*Script written by Chrissyx                                         *
+*You may use and edit this script, if you don't remove this comment!*
+*http://www.chrissyx.de(.vu)/                                       *
+\*******************************************************************/
+
+function canShout()
+{   
+ document.getElementById('shoutboxform').shout.disabled = (document.getElementById('shoutboxform').name.value.length != 0) ? false : true;
+};
+
+function setShoutSmilie(smilie)
 {
- $value = explode("\t", $smilies[$i]);
- if ($i == 11) echo("<br />\n");
- echo("<a href=\"javascript:setShoutSmilie(' " . $value[1] . " ');\"><img src=\"forum/" . $value[2] . "\" border=\"0\" alt=\"" . $value[1] . "\"></a>");
+ document.getElementById('shoutboxform').shoutbox.value += smilie;
+ document.getElementById('shoutboxform').shoutbox.focus();
+};
+</script>
+
+<a id="shoutbox" name="shoutbox"></a>
+<form id="shoutboxform" name="shoutboxform" action="<?=$_SERVER['PHP_SELF']?>#shoutbox" method="post" onmouseover="canShout();">
+<div style="white-space:nowrap;">Nick: <input type="text" name="name" size="17" value="<?=$_SESSION['shoutName']?>" onchange="canShout();" /><br />
+<textarea name="shoutbox" rows="3" cols="18"></textarea><?php
+//Smilies
+if($smilies)
+{
+ $size = count($smilies);
+ for($i=0; $i<$size; $i++)
+ {
+  $smilie = explode("\t", $smilies[$i]);
+  $key[] = $smilie[1];
+  $value[] = '<img src="' . $forum . '/' . $smilie[2] . '" style="border:none;" alt="' . $smilie[1] . '" />';
+  if($i<$smiliesmax)
+  {
+   if(($i % $smiliesmaxrow) == 0) echo("<br />\n");
+   echo("<a href=\"javascript:setShoutSmilie(' " . $smilie[1] . " ');\">" . $value[$i] . '</a>');
+  }
+ }
+ $smilies = array_combine($key, $value);
 }
 ?><br />
-<input type="submit" name="shout" value="Shout!" disabled> <input type="reset" value="Reset"> <input type="button" value="Archiv" onClick="window.open('shoutbox.php?action=archiv', '_blank', 'width=400, resizable, scrollbars, status');"></div>
-<input type="hidden" name="action" value="shout">
-<?php if($_SESSION['shoutpw']) echo("<a href=\"" . $_SERVER['PHP_SELF'] . "?action=shoutout\">Logout</a>"); ?></form>
+<input type="submit" name="shout" value="Shout!" style="width:53px;" readonly="readonly" /> <input type="reset" value="Reset" style="width:53px;" /> <input type="button" value="Archiv" style="width:53px;" onclick="window.open('shoutbox.php?action=archiv&amp;page=0', '_blank', 'width=400, resizable, scrollbars, status');" /><br />
+<input type="button" value="Reload" onclick="document.location='<?=$_SERVER['PHP_SELF']?>#shoutbox';" style="width:<?=($smilies) ? "63px;\" /> <input type=\"button\" value=\"Mehr Smilies\" style=\"width:100px;\" onclick=\"window.open('shoutbox.php?action=smilies', '_blank', 'width=250, resizable, scrollbars, status')" : '167px'?>;" />
+</div>
+<input type="hidden" name="action" value="shout" />
+<?php if($_SESSION['shoutpw'] && $_SESSION['dispall']) echo('<a href="' . $_SERVER['PHP_SELF'] . '?action=shoutout">Logout</a>'); ?>
+</form>
 
- <?php
-
+<?php
 //Shouten
- if ($action == "shout")
+ if($action == 'shout')
  {
   $towrite = file($shoutboxdat);                                                                                                                                
-  array_unshift($towrite, $_SERVER['REMOTE_ADDR'] . "\t" . date("d.m.Y") . "\t" . date("H:i:s") . "\t" . (($_POST['cookieName']) ? htmlspecialchars(stripslashes($_POST['cookieName']), ENT_QUOTES) : $_SERVER['REMOTE_ADDR']) . "\t" . ereg_replace("(\r)(\n)", "" , nl2br(htmlspecialchars(stripslashes($_POST['shoutbox']), ENT_QUOTES))) . "\n");
-  while (count($towrite) > $shoutmax)
+  array_unshift($towrite, $_SERVER['REMOTE_ADDR'] . "\t" . date('d.m.Y') . "\t" . date('H:i:s') . "\t" . (($_POST['name']) ? htmlentities(stripslashes($_POST['name']), ENT_QUOTES) : $_SERVER['REMOTE_ADDR']) . "\t" . ereg_replace("(\r)(\n)", '' , nl2br(htmlentities(stripslashes($_POST['shoutbox']), ENT_QUOTES))) . "\n");
+  while(count($towrite) > $shoutmax)
   {
    $archiv = file($shoutarchivdat);
    array_unshift($archiv, $towrite[count($towrite)-1]);
    array_pop($towrite);
-   $temp = fopen($shoutarchivdat, "w");
-   fwrite($temp, implode("", $archiv));
+   $temp = fopen($shoutarchivdat, 'w');
+   fwrite($temp, implode('', $archiv));
    fclose($temp);
   }
-  $temp = fopen($shoutboxdat, "w");
-  fwrite($temp, implode("", $towrite));
+  $temp = fopen($shoutboxdat, 'w');
+  fwrite($temp, implode('', $towrite));
   fclose($temp);
+  $_SESSION['shoutName'] = $_POST['name'];
  }
 
 //Shouts löschen
- elseif ($action == "deleteshout")
+ elseif($action == 'deleteshout')
  {
-  $pw = @file($shoutpwdat) or die("<b>ERROR:</b> Passwort noch nicht angelegt!");
-  if ($_SESSION['shoutpw'] == $pw[0] && $_SESSION['dispall'])
+  $pw = @file_get_contents($shoutpwdat) or die('<b>ERROR:</b> Passwort noch nicht angelegt!');
+  if(($_SESSION['shoutpw'] == $pw) && $_SESSION['dispall'])
   {
    $towrite = file($shoutboxdat);
-   if (!$towrite[$_GET['id']]) die("<b>ERROR:</b> Shout nicht gefunden!");
+   if(!$towrite[$_GET['id']]) die('<b>ERROR:</b> Shout nicht gefunden!');
    array_splice($towrite, $_GET['id'], 1);
    $archiv = file($shoutarchivdat);
    $towrite[] = $archiv[0];
    array_shift($archiv);
-   $temp = fopen($shoutarchivdat, "w");
-   fwrite($temp, implode("", $archiv));
+   $temp = fopen($shoutarchivdat, 'w');
+   fwrite($temp, implode('', $archiv));
    fclose($temp);
-   $temp = fopen($shoutboxdat, "w");
-   fwrite($temp, implode("", $towrite));
+   $temp = fopen($shoutboxdat, 'w');
+   fwrite($temp, implode('', $towrite));
    fclose($temp);
    echo("Shout gelöscht!<br />\n");
   }
   else echo("<b>ERROR:</b> Keine Adminrechte!<br />\n");
  }
 
-//Shouts zeigen
- $temp = file($shoutboxdat);
- if (!$temp) echo("Keine Shouts gefunden!");
- $size = count($smilies);
- if ($_SESSION['dispall']) foreach($temp as $key => $value)
-                           {
-                            $value = explode("\t", $value);
-                            for ($i=0; $i<=$size; $i++)
-                            {
-                             $smilie = explode("\t", $smilies[$i]);
-                             $value[4] = str_replace($smilie[1], "<img src=\"forum/" . $smilie[2] . "\" border=\"0\" alt=\"" . $smilie[1] . "\">", $value[4]);
-                            }
-                            echo("<strong>" . $value[3] . "</strong> am <strong>" . $value[1] . "</strong> um <strong>" . $value[2] . "</strong>:<br />\n" . trim($value[4]) . "<br />\n<div class=\"nowrap\">IP: <strong>" . $value[0] . "</strong> - [ <a href=\"" . $_SERVER['PHP_SELF'] . "?action=deleteshout&id=$key\">Delete</a> ]</div>\n<hr>");
-                           }
- else foreach($temp as $value)
+//Shouts zeigen (Achtung: 1337!)
+ if(!$temp = file($shoutboxdat)) echo('Keine Shouts gefunden!');
+ else foreach($temp as $key => $value)
       {
        $value = explode("\t", $value);
-       for ($i=0; $i<=$size; $i++)
+       $value[4] = preg_replace_callback("/([^ ^>]+?:\/\/|www\.)[^ ^<^\.]+(\.[^ ^<^\.]+)+/si", create_function('$arr', "return (\$arr[2]) ? '<a href=\"' . ((\$arr[1] == 'www.') ? 'http://' : '') . \$arr[0] . '\" target=\"blank\">' . ((strlen(\$arr[0]) > 25) ? substr(\$arr[0], 0, 15) . '...' . substr(\$arr[0], -10) : \$arr[0]) . '</a>' : \$arr[0];"), $value[4]);
+       if($size = preg_match_all("/([\w]{26,})/si", $value[4], $wrapme))
        {
-        $smilie = explode("\t", $smilies[$i]);
-        $value[4] = str_replace($smilie[1], "<img src=\"forum/" . $smilie[2] . "\" border=\"0\" alt=\"" . $smilie[1] . "\">", $value[4]);
+        $wrapme = array_shift($wrapme);
+        $value[4] = strtr($value[4], array_combine($wrapme, array_map('wordwrap', $wrapme, array_fill(0, $size, 15), array_fill(0, $size, '&shy;'), array_fill(0, $size, true))));
        }
-       echo("<strong>" . $value[3] . "</strong> am <strong>" . $value[1] . "</strong> um <strong>" . $value[2] . "</strong>:<br />\n" . trim($value[4]) . "<br />\n<hr noshade>");
+       echo('<strong>' . $value[3] . '</strong> am <strong>' . $value[1] . '</strong> um <strong>' . $value[2] . "</strong>:<br />\n" . (($smilies) ? strtr($value[4], $smilies) : $value[4]) . "<br />\n" . (($_SESSION['dispall']) ? '<div style="white-space:nowrap;">IP: <strong>' . $value[0] . '</strong> - [ <a href="' . $_SERVER['PHP_SELF'] . '?action=deleteshout&amp;id=' . $key . "#shoutbox\">Delete</a> ]</div>\n" : '') . "<hr noshade=\"noshade\" />\n");
       }
 }
 ?>
