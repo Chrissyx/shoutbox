@@ -41,7 +41,23 @@
   </ul><br />
 
   <h4 id="de_install">Installation</h4>
-  <p>Lade in dem Ordner, wo deine Webseite ist und auf welcher die Shoutbox zum Einsatz kommen soll, den Ordner &quot;chscore&quot; samt Inhalt hoch. Falls der Ordner bereits existiert, k&ouml;nnen vorhandene Dateien ersetzt werden. Rufe danach deine Seite auf und h&auml;nge ein <code>?module=CHSShoutboxAdmin</code> an die Adresse an. Folge dann den Anweisungen.</p><br />
+  <ol>
+   <li style="margin-bottom:10px;">Lade in dem Ordner, wo deine Webseite ist und auf welcher die Shoutbox zum Einsatz kommen soll, den Ordner &quot;chscore&quot; samt Inhalt hoch. Falls der Ordner bereits existiert, k&ouml;nnen vorhandene Dateien ersetzt werden.</li>
+   <li style="margin-bottom:10px;">Falls noch nicht vorhanden, f&uuml;ge ganz am Anfang deiner Seite (noch vor <code>&lt;html&gt;</code>, <code>&lt;!DOCTYPE [...]</code> oder <code>&lt;?xml [...]</code>) diesen Code ein:<br />
+       <code>&lt;?php include('chscore/CHSCore.php'); ?&gt;</code></li>
+   <li>Rufe danach deine Seite auf und h&auml;nge ein <code>?module=CHSShoutboxAdmin</code> an die Adresse an. Folge dann den Anweisungen.</li>
+  </ol>
+
+  <h5>Beispiel</h5>
+  <ul>
+   <li style="margin-bottom:10px;">Deine Seite ist:<br />
+       <code>http://www.meineSeite.de/meinOrdner/meineIndex.php</code><br />
+       <span style="font-size:small;">(Hier in die erste Zeile <code>&lt;?php include('chscore/CHSCore.php'); ?&gt;</code> einfügen)</span></li>
+   <li style="margin-bottom:10px;">Dann die Shoutbox hochladen nach:<br />
+       <code>http://www.meineSeite.de/meinOrdner/chscore/</code></li>
+   <li>Und die Installation starten mit:<br />
+       <code>http://www.meineSeite.de/meinOrdner/meineIndex.php?module=CHSShoutboxAdmin</code></li>
+  </ul><br />
 
   <h4 id="de_update">Update von 0.9.11 auf 2.0</h4>
   <p>Sichere dir die &quot;shoutbox.dat&quot; und &quot;shoutarchiv.dat&quot; aus dem &quot;shoutbox&quot;-Ordner. L&ouml;sche danach diesen Ordner, die &quot;shoutbox.php&quot; und den damals eingef&uuml;gten Code auf deiner Seite. Installiere dann die neue Version wie oben beschrieben.<br />
@@ -90,7 +106,23 @@
   </ul><br />
 
   <h4 id="en_install">Installation</h4>
-  <p>Upload in that directory, in which your website is (and you're planning to use the shoutbox), the folder &quot;chscore&quot; including its contents. Point your browser to your website and attach <code>?module=CHSShoutboxAdmin</code> to the address. Follow the instructions.</p><br />
+  <ol>
+   <li style="margin-bottom:10px;">Upload in that directory, in which your website is (and you're planning to use the shoutbox), the folder &quot;chscore&quot; including its contents. If it already exists, overwrite the files.</li>
+   <li style="margin-bottom:10px;">If not yet present, paste in this code at the very beginning of your site (even before <code>&lt;html&gt;</code>, <code>&lt;!DOCTYPE [...]</code> or <code>&lt;?xml [...]</code>):<br />
+       <code>&lt;?php include('chscore/CHSCore.php'); ?&gt;</code></li>
+   <li style="margin-bottom:10px;">Point your browser to your website and attach <code>?module=CHSShoutboxAdmin</code> to the address. Follow the instructions.</li>
+  </ol>
+
+  <h5>Example</h5>
+  <ul>
+   <li style="margin-bottom:10px;">Your site is:<br />
+       <code>http://www.mySite.com/myFolder/myIndex.php</code><br />
+       <span style="font-size:small;">(Put in here in the first line <code>&lt;?php include('chscore/CHSCore.php'); ?&gt;</code>)</span></li>
+   <li style="margin-bottom:10px;">Then upload the shoutbox to:<br />
+       <code>http://www.mySite.com/myFolder/chscore/</code></li>
+   <li>And start installation with:<br />
+       <code>http://www.mySite.com/myFolder/myIndex.php?module=CHSShoutboxAdmin</code></li>
+  </ul><br />
 
   <h4 id="en_faq">FAQ</h4>
   <ul>

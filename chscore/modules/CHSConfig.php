@@ -64,6 +64,7 @@ class CHSConfig implements CHSModule
   *
   * @param string $module Name of module
   * @param mixed $name Identifier of config value
+  * @return
   */
  public function getConfigValue($module, $key)
  {
