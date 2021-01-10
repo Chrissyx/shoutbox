@@ -3,7 +3,7 @@
 ######################################
 
 
-Version: 0.9.10
+Version: 0.9.11
 
 
 Vorwort
@@ -26,6 +26,10 @@ Installation
 Die Installation ist gewohnt einfach: Lade in dem Ordner, wo deine Webseite ist (auf welcher die Shoutbox zum
 Einsatz kommen soll), die "shoutbox.php" und den Ordner "shoutbox" samt Inhalt hoch. Rufe danach die "index.php"
 aus dem Ordner "shoutbox" auf und folge dann den Anweisungen.
+
+
+Update auf neue Version
+Lade, wie schon zur Installation auch, alle Dateien hoch und ersetze so jede Datei durch ihre neue Version.
 
 
 FAQ
@@ -53,7 +57,7 @@ Mehr Infos zum TBB unter http://www.tritanium-scripts.com/
 
 
 Credits
-© 2006 - 2008 by Chrissyx
+© 2006 - 2009 by Chrissyx
 Powered by V4 Technology
 http://www.chrissyx.de(.vu)/
 http://www.chrissyx.com/

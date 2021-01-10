@@ -1,13 +1,21 @@
 <?php
+/**
+ * Benötigte Funktionen und initiale Anweisungen.
+ * 
+ * @author Chrissyx
+ * @copyright (c) 2001 - 2009 by Chrissyx
+ * @license http://creativecommons.org/licenses/by-nc-sa/3.0/ Creative Commons 3.0 by-nc-sa
+ * @package CHS_Shoutbox
+ */
 //$action laden
-$action = (!$_GET['action']) ? $_POST['action'] : $_GET['action'];
+$action = isset($_GET['action']) ? $_GET['action'] : (isset($_POST['action']) ? $_POST['action'] : '');
 
 //echo Kurzform aktivieren
-if(ini_get(short_open_tag) == '0') ini_set(short_open_tag, '1');
+if(ini_get('short_open_tag') == '0') ini_set('short_open_tag', '1');
 
 //Session laden, IP sichern
 session_start();
-if(!$_SESSION['session_ip']) $_SESSION['session_ip'] = $_SERVER['REMOTE_ADDR'];
+if(!isset($_SESSION['session_ip'])) $_SESSION['session_ip'] = $_SERVER['REMOTE_ADDR'];
 else if($_SESSION['session_ip'] != $_SERVER['REMOTE_ADDR']) die('Nicht erlaubt, diese Session zu verwenden!');
 
 //Aufbauzeit [PHP4]
@@ -80,7 +88,7 @@ function tail()
  * 
  * @author Chrissyx
  * @copyright Chrissyx
- * @param string HTML Schriftgröße von 1 bis 7 oder eigener Wert.
+ * @param string HTML Schriftgröße von 1 bis 7 oder eigener Wert
  */
 function font($wert)
 {

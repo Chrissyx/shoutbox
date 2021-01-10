@@ -1,17 +1,17 @@
 <?php
-
-#####################################################################
-#Script written by Chrissyx                                         #
-#You may use and edit this script, if you don't remove this comment!#
-#http://www.chrissyx.de(.vu)/                                       #
-#####################################################################
-
-$temp = explode('/', $_SERVER['PHP_SELF']);
-if(($temp[count($temp)-2]) != 'shoutbox') die('<b>ERROR:</b> Konnte Verzeichnis "shoutbox" nicht finden! "index.php" aufgerufen?');
-elseif(!file_exists('../shoutbox.php')) die('<b>ERROR:</b> Konnte "shoutbox.php" nicht finden!');
-elseif(!file_exists('style.css')) die('<b>ERROR:</b> Konnte "style.css" nicht finden!');
-elseif(!file_exists('functions.php')) die('<b>ERROR:</b> Konnte "functions.php" nicht finden!');
-else include('functions.php');
+ /**
+ * Adminmodul zum Installieren und Verwalten der Shoutbox.
+ * 
+ * @author Chrissyx
+ * @copyright (c) 2006 - 2009 by Chrissyx
+ * @license http://creativecommons.org/licenses/by-nc-sa/3.0/ Creative Commons 3.0 by-nc-sa
+ * @package CHS_Newsscript
+ * @version 0.9.11
+ */
+if(!is_dir('../shoutbox/')) die('<b>ERROR:</b> Konnte Verzeichnis &quot;shoutbox&quot; nicht finden!');
+elseif(!file_exists('../shoutbox.php')) die('<b>ERROR:</b> Konnte &quot;shoutbox.php&quot; nicht finden!');
+elseif(!file_exists('style.css')) die('<b>ERROR:</b> Konnte &quot;style.css&quot; nicht finden!');
+else require('functions.php');
 
 if(file_exists('settings.dat'))
 {
@@ -27,12 +27,13 @@ if(file_exists('settings.dat'))
   $action = 'admin';
  }
 }
-
-$temp = $temp[count($temp)-1];
-if(decoct(fileperms($temp)) != '100775') chmod($temp, 0775) or die('<b>ERROR:</b> Konnte für "' . $temp . '" keine Rechte setzen!');
-elseif(decoct(fileperms('../shoutbox.php')) != '100775') chmod('../shoutbox.php', 0775) or die('<b>ERROR:</b> Konnte für "shoutbox.php" keine Rechte setzen!');
-elseif(decoct(fileperms('../shoutbox/')) != '40775') chmod('../shoutbox/', 0775) or die('<b>ERROR:</b> Konnte für den Ordner "shoutbox" keine Rechte setzen!');
-clearstatcache();
+else
+{
+ if(decoct(fileperms($temp = basename($_SERVER['PHP_SELF']))) != '100775') chmod($temp, 0775) or die('<b>ERROR:</b> Konnte für &quot;' . $temp . '&quot; keine Rechte setzen!');
+ elseif(decoct(fileperms('../shoutbox.php')) != '100775') chmod('../shoutbox.php', 0775) or die('<b>ERROR:</b> Konnte für &quot;shoutbox.php&quot; keine Rechte setzen!');
+ elseif(decoct(fileperms('../shoutbox/')) != '40775') chmod('../shoutbox/', 0775) or die('<b>ERROR:</b> Konnte für den Ordner &quot;shoutbox&quot; keine Rechte setzen!');
+ clearstatcache();
+}
 
 switch($action)
 {
@@ -84,27 +85,9 @@ switch($action)
     fwrite($temp, $_SESSION['shoutpw']);
     fclose($temp);
    }
-   if($_POST['shoutboxdat'] != $settings[0])
-   {
-    $temp = fopen('../' . $_POST['shoutboxdat'], 'w');
-    fwrite($temp, file_get_contents('../' . $settings[0]));
-    fclose($temp);
-    unlink('../' . $settings[0]);
-   }
-   if($_POST['shoutarchivdat'] != $settings[2])
-   {
-    $temp = fopen('../' . $_POST['shoutarchivdat'], 'w');
-    fwrite($temp, file_get_contents('../' . $settings[2]));
-    fclose($temp);
-    unlink('../' . $settings[2]);
-   }
-   if($_POST['shoutpwdat'] != $settings[3])
-   {
-    $temp = fopen('../' . $_POST['shoutpwdat'], 'w');
-    fwrite($temp, file_get_contents('../' . $settings[3]));
-    fclose($temp);
-    unlink('../' . $settings[3]);
-   }
+   if($_POST['shoutboxdat'] != $settings[0]) rename('../' . $settings[0], '../' . $_POST['shoutboxdat']) or $_POST['shoutboxdat'] = $settings[0];
+   if($_POST['shoutarchivdat'] != $settings[2]) rename('../' . $settings[2], '../' . $_POST['shoutarchivdat']) or $_POST['shoutarchivdat'] = $settings[2];
+   if($_POST['shoutpwdat'] != $settings[3]) rename('../' . $settings[3], '../' . $_POST['shoutpwdat']) or $_POST['shoutpwdat'] = $settings[3];
    $temp = fopen('settings.dat', 'w');
    fwrite($temp, $_POST['shoutboxdat'] . "\n" . $_POST['shoutarchivmax'] . "\n" . $_POST['shoutarchivdat'] . "\n" . $_POST['shoutpwdat'] . "\n" . $_POST['shoutmax'] . "\n" . $_POST['shoutsmilies'] . "\n" . $_POST['smiliesmax']. "\n" . $_POST['smiliesmaxrow'] . "\n" .  $_POST['redir']);
    fclose($temp);
@@ -150,15 +133,8 @@ switch($action)
   <script type="text/javascript">
   function help(data)
   {
-
-  /*******************************************************************\
-  *Script written by Chrissyx                                         *
-  *You may use and edit this script, if you don't remove this comment!*
-  *http://www.chrissyx.de(.vu)/                                       *
-  \*******************************************************************/
-
    document.getElementById('help').firstChild.nodeValue = data;
-  };
+  }
   </script>
 
   <?php font('4'); ?>CHS - Shoutbox: Installation</span><br /><br />
@@ -166,7 +142,7 @@ switch($action)
   Bitte treffe folgende Einstellungen:<br /><br />
   <form action="<?=$_SERVER['PHP_SELF']?>" method="post">
   <table onmouseout="help('Hier findest Du jeweils eine kleine Hilfe zu den Einstellungen. Aktiviere JavaScript, falls sich hier nichts ändert.');">
-   <tr><td colspan="2"></td><td rowspan="16" width="200" style="background-color:yellow"><div id="help">Hier findest Du jeweils eine kleine Hilfe zu den Einstellungen. Aktiviere JavaScript, falls sich hier nichts ändert.</div></td></tr>
+   <tr><td colspan="2"></td><td rowspan="16" style="background-color:yellow; width:200px;"><div id="help">Hier findest Du jeweils eine kleine Hilfe zu den Einstellungen. Aktiviere JavaScript, falls sich hier nichts ändert.</div></td></tr>
    <tr onmouseover="help('Lege hier die Anzahl der angezeigten Shouts fest, bevor sie ins Archiv verschoben werden. Je mehr Shouts, desto länger wird die Box und der benötigte Platz zum Anzeigen auf deiner Seite. Normal sind 5 bis 10 Einträge, aber das ist dir überlassen.');"><td>Anzahl der Shouts:</td><td><input type="text" name="shoutmax" value="5" size="25" /></td></tr>
    <tr onmouseover="help('Optional: Wenn Du willst, kannst Du hier angeben, ob Shouts im Archiv seitenweise angezeigt werden sollen. Falls ja, bieten sich 40 bis 50 Einträge an, es können aber auch über 100 und mehr sein.');"><td>Shouts pro Archiv:</td><td><input type="text" name="shoutarchivmax" size="25" onfocus="this.value='50';" /></td></tr>
    <tr><td colspan="2"></td></tr>

@@ -1,11 +1,13 @@
 <?php
-
-#####################################################################
-#Script written by Chrissyx                                         #
-#You may use and edit this script, if you don't remove this comment!#
-#http://www.chrissyx.de(.vu)/                                       #
-#####################################################################
-
+/**
+ * Shoutbox zum Anzeigen und Verwalten der Shouts. Verarbeitet auch Login und Passwörter.
+ * 
+ * @author Chrissyx
+ * @copyright (c) 2006 - 2009 by Chrissyx
+ * @license http://creativecommons.org/licenses/by-nc-sa/3.0/ Creative Commons 3.0 by-nc-sa
+ * @package CHS_Shoutbox
+ * @version 0.9.11
+ */
 /**
  * Generiert den XHTML Head für jede interne Seite der Shoutbox und sendet den passenden Content-Type, wenn der Browser XML unterstützt.
  * 
@@ -48,16 +50,15 @@ else
 {
  //Config: Shoutbox, Anzahl Archiv, Archiv, Passwort, Anzahl, TBB Smilies, Smilies Anzahl, Smilies Anzahl Reihe, Redir nach Login
  list($shoutboxdat, $shoutarchivmax, $shoutarchivdat, $shoutpwdat, $shoutmax, $smilies, $smiliesmax, $smiliesmaxrow, $redir) = @array_map('trim', file('shoutbox/settings.dat')) or die('<b>ERROR:</b> Keine Einstellungen gefunden!');
- $forum = explode('/', $smilies);
- $forum = implode('/', array_slice($forum, 0, count($forum)-2));
+ $forum = implode('/', array_slice(explode('/', $smilies), 0, -2));
  $temp = fopen('shoutbox/settings.php', 'w');
- fwrite($temp, "<?php\n //Auto-generated config!\n \$shoutboxdat = '$shoutboxdat';\n \$shoutarchivmax = " . (($shoutarchivmax) ? $shoutarchivmax : "''") . ";\n \$shoutarchivdat = '$shoutarchivdat';\n \$shoutpwdat = '$shoutpwdat';\n \$shoutmax = $shoutmax;\n \$smilies = file('$smilies');\n \$smiliesmax = " . (($smiliesmax) ? $smiliesmax : "''") . ";\n \$smiliesmaxrow = " . (($smiliesmaxrow) ? $smiliesmaxrow : "''") . ";\n \$redir = '$redir';\n \$forum = '$forum';\n?>");
+ fwrite($temp, "<?php\n //Auto-generated config!\n \$shoutboxdat = '$shoutboxdat';\n \$shoutarchivmax = " . ($shoutarchivmax ? $shoutarchivmax : "''") . ";\n \$shoutarchivdat = '$shoutarchivdat';\n \$shoutpwdat = '$shoutpwdat';\n \$shoutmax = $shoutmax;\n \$smilies = array_map('trim', " . (file_exists($smilies) ? "file('$smilies')" : 'array()') . ");\n \$smiliesmax = " . ($smiliesmax ? $smiliesmax : "''") . ";\n \$smiliesmaxrow = " . ($smiliesmaxrow ? $smiliesmaxrow : "''") . ";\n \$redir = '$redir';\n \$forum = '$forum';\n?>");
  fclose($temp);
- $smilies = file($smilies);
+ $smilies = array_map('trim', file_exists($smilies) ? file($smilies) : array());
 }
 
 //$action laden
-$action = (!$_GET['action']) ? $_POST['action'] : $_GET['action'];
+$action = isset($_GET['action']) ? $_GET['action'] : (isset($_POST['action']) ? $_POST['action'] : '');
 session_start();
 
 //Mehr Smilies
@@ -95,7 +96,7 @@ elseif($action == 'admin')
  {
   headBox('CHS - Shoutbox: Login', 'Shoutbox, CHS, Login, Chrissyx', 'Login der Shoutbox von CHS', '<link rel="stylesheet" media="all" href="shoutbox/style.css" />');
   ?>
-  <span style="font-size:large;">CHS - Shoutbox: Login</span><br />
+  <h4>CHS - Shoutbox: Login</h4>
   <form action="<?=$_SERVER['PHP_SELF']?>" method="post">
   Bitte Passwort angeben: <input type="password" name="shoutpw" <?php if($_POST['shoutpw']) echo('style="border-color:#FF0000;" /><br />
   <span style="color:#FF0000; font-weight:bold;">&raquo; Falsches Passwort!</span><br '); ?>/><br />
@@ -170,23 +171,36 @@ else
  ?>
 
 <script type="text/javascript">
-
-/*******************************************************************\
-*Script written by Chrissyx                                         *
-*You may use and edit this script, if you don't remove this comment!*
-*http://www.chrissyx.de(.vu)/                                       *
-\*******************************************************************/
-
+/**
+ * Activates the submit button, depending on the stated name.
+ * 
+ * @author Chrissyx
+ * @copyright (c) 2001 - 2009 by Chrissyx
+ * @license http://creativecommons.org/licenses/by-nc-sa/3.0/ Creative Commons 3.0 by-nc-sa
+ * @link http://www.chrissyx.de(.vu)/
+ * @since 0.9
+ * @version 1.0
+ */
 function canShout()
-{   
- document.getElementById('shoutboxform').shout.disabled = (document.getElementById('shoutboxform').name.value.length != 0) ? false : true;
-};
+{
+ (sbform = document.getElementById('shoutboxform')).shout.disabled = sbform.name.value.length != 0 ? false : true;
+}
 
+/**
+ * Adds a smilie-string to the textbox.
+ * 
+ * @author Chrissyx
+ * @copyright (c) 2001 - 2009 by Chrissyx
+ * @license http://creativecommons.org/licenses/by-nc-sa/3.0/ Creative Commons 3.0 by-nc-sa
+ * @link http://www.chrissyx.de(.vu)/
+ * @since 0.9
+ * @version 1.0
+ */
 function setShoutSmilie(smilie)
 {
- document.getElementById('shoutboxform').shoutbox.value += smilie;
- document.getElementById('shoutboxform').shoutbox.focus();
-};
+ (sbbox = document.getElementById('shoutboxform').shoutbox).value += smilie;
+ sbbox.focus();
+}
 </script>
 
 <a id="shoutbox" name="shoutbox"></a>
@@ -201,18 +215,18 @@ if($smilies)
  {
   $smilie = explode("\t", $smilies[$i]);
   $key[] = $smilie[1];
-  $value[] = '<img src="' . $forum . '/' . $smilie[2] . '" style="border:none;" alt="' . $smilie[1] . '" />';
+  $value[] = '<img src="' . $forum . '/' . $smilie[2] . '" alt="' . $smilie[1] . '" style="border:none;" />';
   if($i<$smiliesmax)
   {
    if(($i % $smiliesmaxrow) == 0) echo("<br />\n");
-   echo("<a href=\"javascript:setShoutSmilie(' " . $smilie[1] . " ');\">" . $value[$i] . '</a>');
+   echo("<a href=\"javascript:setShoutSmilie(' " . $smilie[1] . "');\">" . $value[$i] . '</a>');
   }
  }
  $smilies = array_combine($key, $value);
 }
 ?><br />
 <input type="submit" name="shout" value="Shout!" style="width:53px;" readonly="readonly" /> <input type="reset" value="Reset" style="width:53px;" /> <input type="button" value="Archiv" style="width:53px;" onclick="window.open('shoutbox.php?action=archiv&amp;page=0', '_blank', 'width=400, resizable, scrollbars, status');" /><br />
-<input type="button" value="Reload" onclick="document.location='<?=$_SERVER['PHP_SELF']?>#shoutbox';" style="width:<?=($smilies) ? "63px;\" /> <input type=\"button\" value=\"Mehr Smilies\" style=\"width:100px;\" onclick=\"window.open('shoutbox.php?action=smilies', '_blank', 'width=250, resizable, scrollbars, status')" : '167px'?>;" />
+<input type="button" value="Reload" onclick="window.location='<?=$_SERVER['PHP_SELF']?>#shoutbox'; location.reload();" style="width:<?=($smilies) ? "63px;\" /> <input type=\"button\" value=\"Mehr Smilies\" style=\"width:100px;\" onclick=\"window.open('shoutbox.php?action=smilies', '_blank', 'width=250, resizable, scrollbars, status')" : '167px'?>;" />
 </div>
 <input type="hidden" name="action" value="shout" />
 <?php if($_SESSION['shoutpw'] && $_SESSION['dispall']) echo('<a href="' . $_SERVER['PHP_SELF'] . '?action=shoutout">Logout</a>'); ?>
@@ -262,7 +276,7 @@ if($smilies)
   else echo("<b>ERROR:</b> Keine Adminrechte!<br />\n");
  }
 
-//Shouts zeigen (Achtung: 1337!)
+//Shouts zeigen (Achtung: 1337! Verstehen auf eigene Gefahr!)
  if(!$temp = file($shoutboxdat)) echo('Keine Shouts gefunden!');
  else foreach($temp as $key => $value)
       {
