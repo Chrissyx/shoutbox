@@ -1,6 +1,6 @@
 <?php
 /**
- * Shoutbox module
+ * Shoutbox module.
  *
  * @author Chrissyx <chris@chrissyx.com>
  * @copyright (c) 2006-2022 by Chrissyx

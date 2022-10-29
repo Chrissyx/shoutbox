@@ -1,6 +1,6 @@
 <?php
 /**
- * Updater for past version of Shoutbox.
+ * Updater for past versions of Shoutbox.
  *
  * @author Chrissyx <chris@chrissyx.com>
  * @copyright (c) 2022 by Chrissyx
@@ -40,5 +40,5 @@ if(version_compare(PHP_VERSION, '5.6.0') >= 0 && function_exists('mb_check_encod
         file_put_contents($config['loc_smilies'], checkConvertUtf8(file_get_contents($config['loc_smilies'])), LOCK_EX);
 }
 
-echo('Update complete!');
+echo('complete!');
 ?>
