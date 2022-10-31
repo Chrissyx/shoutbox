@@ -26,7 +26,7 @@
    <li><a href="#de_intro">Vorwort</a></li>
    <li><a href="#de_reqs">Vorraussetzungen</a></li>
    <li><a href="#de_install">Installation</a></li>
-   <li><a href="#de_update">Update von 0.9.11 auf 2.0</a></li>
+   <li><a href="#de_update">Update</a></li>
    <li><a href="#de_faq">FAQ</a></li>
    <li><a href="#de_credits">Credits</a></li>
   </ul><br />
@@ -59,7 +59,11 @@
        <code>https://www.meineSeite.de/meinOrdner/meineIndex.php?module=CHSShoutboxAdmin</code></li>
   </ul><br />
 
-  <h4 id="de_update">Update von 0.9.11 auf 2.0</h4>
+  <h4 id="de_update">Update</h4>
+  <h5>Update von 2.0 auf 2.1</h5>
+  <p>Lade den Ordner &quot;chscore&quot; samt Inhalt hoch und ersetze so die jeweils vorhandenen Dateien. Danach die <code>updateShoutbox.php</code> hochladen, ausführen und wieder löschen.</p>
+
+  <h5>Update von 0.9.11 auf 2.1</h5>
   <p>Sichere dir die &quot;shoutbox.dat&quot; und &quot;shoutarchiv.dat&quot; aus dem &quot;shoutbox&quot;-Ordner. L&ouml;sche danach diesen Ordner, die &quot;shoutbox.php&quot; und den damals eingef&uuml;gten Code auf deiner Seite. Installiere dann die neue Version wie oben beschrieben.<br />
      Danach m&uuml;ssen die gesicherten Shouts erst in ein neues Format konvertiert werden: Lade dazu den Ordner &quot;import&quot; (<b>nur</b> mit der enthaltenen &quot;shoutbox.php&quot;) dort hoch, wo sich bereits der Ordner &quot;chscore&quot; befindet. Rufe danach die &quot;shoutbox.php&quot; auf und konvertiere die beiden DAT-Dateien. Lade die umgewandelten Dateien in den Ordner &quot;chscore/data/&quot; hoch und ersetzte die vorhandenen. Eventuell m&uuml;ssen die Namen angepasst werden, je nach gemachter Einstellung. Den Ordner &quot;import&quot; im Anschluss wieder l&ouml;schen.</p><br />
 
@@ -77,7 +81,7 @@
        </ul></li>
    <li style="margin-bottom:10px;">Kann ich die Shoutbox auch in andere Sprachen &uuml;bersetzen?<br />
        Aber sicher: Kopiere dir die passende INI-Datei aus dem Ordner &quot;chscore/languages/&quot; (z.B. de-DE.CHSShoutbox.ini) und benenne das offizielle Sprachk&uuml;rzel im Dateinamen in die jeweilige Sprache um. Z.B. &quot;fr-FR.CHSShoutbox.ini&quot; f&uuml;r Franz&ouml;sisch aus Frankreich oder &quot;nl.CHSShoutbox.ini&quot; f&uuml;r allgemein Niederl&auml;ndisch. &Uuml;bersetzte dann die Texte in den Anf&uuml;hrungszeichen und achte dabei auf die Hinweise am Anfang der Datei. Wenn Du eine vollst&auml;ndige &Uuml;bersetzung hast, lade sie in den &quot;chscore/languages/&quot;-Ordner und w&auml;hle sie ggf. im Sprachmen&uuml; der Administration aus. Bitte schick sie mir auch, so dass ich anderen diese ebenfalls zur Verf&uuml;gung stellen kann! :)</li>
-   <li style="margin-bottom:10px;">Wie ist das mit den Smileys in V2.0?<br />
+   <li style="margin-bottom:10px;">Wie ist das mit den Smileys in Version 2?<br />
        Keine Sorge, die Shoutbox bringt jetzt eine eigene Smiley-Verwaltung mit. Nutzung von Smileys aus dem TBB1 wird weiterhin unterst&uuml;tzt.</li>
    <li>Meine Frage wurde nicht beantwortet!<br />
        Dann besuch mein Forum unter <a href="https://www.chrissyx.com/forum/" target="_blank">https://www.chrissyx.com/forum/</a> oder schreib mir eine E-Mail: <a href="mailto:chris@chrissyx.com">chris@chrissyx.com</a></li>
@@ -93,11 +97,16 @@
 
   <h4>Content</h4>
   <ul>
+   <li><a href="#en_intro">Introduction</a></li>
    <li><a href="#en_reqs">Requirements</a></li>
    <li><a href="#en_install">Installation</a></li>
+   <li><a href="#en_update">Update from 2.0 to 2.1</a></li>
    <li><a href="#en_faq">FAQ</a></li>
    <li><a href="#en_credits">Credits</a></li>
   </ul><br />
+
+  <h4 id="en_intro">Introduction</h4>
+  <p>The multilingual shoutbox is fast, lightweight and user-friendly. Everything is configurable, starting from the number of displayed shouts, number of smilies (even for each row!) up to the storage locations of the internal system files. Archived shouts are being stored separately allowing really fast displaying of the most recent ones and listed in the archive having an optional configured pagination. The box is continuously being hold minimal, i.e. longer links are displayed shorten and also longer words are wrapped by hyphen(s) automatically if needed. Smilies are either maintained by the box itself or utilized from a <a href="http://www.tritanium-scripts.com/" target="_blank">TBB1 forum</a>. All settings are accessable within the dedicated admin panel; cached settings are renewed automatically and immediately active after logout.</p><br />
 
   <h4 id="en_reqs">Requirements</h4>
   <ul>
@@ -124,6 +133,9 @@
        <code>https://www.mySite.com/myFolder/myIndex.php?module=CHSShoutboxAdmin</code></li>
   </ul><br />
 
+  <h4 id="en_update">Update from 2.0 to 2.1</h4>
+  <p>Upload the folder &quot;chscore&quot; including its contents and replace each existing file. Then upload <code>updateShoutbox.php</code>, execute and delete it again.</p><br />
+
   <h4 id="en_faq">FAQ</h4>
   <ul>
    <li style="margin-bottom:10px;">How to manage my shoutbox?<br />
@@ -139,7 +151,7 @@
    <li style="margin-bottom:10px;">Is it possible to translate the shoutbox to another language?<br />
        Of course, copy an appropriate INI file (e.g. en-US.CHSShoutbox.ini) from the &quot;chscore/languages/&quot; folder and rename the official language code of the filename to the corresponding of the desired language. Like &quot;fr-FR.CHSShoutbox.ini&quot; for French in France or &quot;nl.CHSShoutbox.ini&quot; for general Dutch. Start translating the strings between the quotation marks and check the hints at the beginning of the file. By having a complete translation, upload it to the &quot;chscore/languages/&quot; folder and if applicable choose it from the language menu in the administration panel. Please send it also to me for providing it to other user! :)</li>
    <li style="margin-bottom:10px;">My question isn't answered here!<br />
-       Please visit my board at <a href="https://www.chrissyx.com/forum/" target="_blank">https://www.chrissyx.com/forum/</a> or write me an e-mail: <a href="mailto:chris@chrissyx.com">chris@chrissyx.com</a></li>
+       Please visit my board at <a href="https://www.chrissyx.com/forum/" target="_blank">https://www.chrissyx.com/forum/</a> or write me an email: <a href="mailto:chris@chrissyx.com">chris@chrissyx.com</a></li>
   </ul><br />
 
   <h4 id="en_credits">Credits</h4>
