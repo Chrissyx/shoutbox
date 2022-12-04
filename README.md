@@ -1,6 +1,6 @@
 # Chrissyx Homepage Scripts - Shoutbox
 
-[![version](https://img.shields.io/badge/version-2.1.0-blue)](https://www.chrissyx.com/scripts.php#Shoutbox)
+[![version](https://img.shields.io/badge/version-2.1.1-blue)](https://www.chrissyx.com/scripts.php#Shoutbox)
 
 ## Introduction
 The multilingual shoutbox is fast, lightweight and user-friendly. Everything is configurable, starting from the number of displayed shouts, number of smilies (even for each row!) up to the storage locations of the internal system files. Archived shouts are being stored separately allowing really fast displaying of the most recent ones and listed in the archive having an optional configured pagination. The box is continuously being hold minimal, i.e. longer links are displayed shorten and also longer words are wrapped by hyphen(s) automatically if needed. Smilies are either maintained by the box itself or utilized from a [TBB1 forum](http://www.tritanium-scripts.com). All settings are accessable within the dedicated admin panel; cached settings are renewed automatically and immediately active after logout.
