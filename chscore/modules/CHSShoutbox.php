@@ -174,7 +174,7 @@ class CHSShoutbox implements CHSModule
     public function showArchive()
     {
         CHSFunctions::printHead('CHS &ndash; Shoutbox: ' . Loader::getModule('CHSLanguage')->getString('title', 'archive'), 'Shoutbox, CHS, ' . Loader::getModule('CHSLanguage')->getString('title', 'archive') . ', Chrissyx', Loader::getModule('CHSLanguage')->getString('descr', 'archive'), Loader::getModule('CHSLanguage')->getString('charset', 'common'), Loader::getModule('CHSLanguage')->getLangCode());
-        $this->printShouts(array_map('utf8_encode', file($this->config['loc_archive'])), $this->config['shouts_in_archive']);
+        $this->printShouts(file($this->config['loc_archive']), $this->config['shouts_in_archive']);
         CHSFunctions::printTail('CHSShoutbox', 'common');
     }
 
