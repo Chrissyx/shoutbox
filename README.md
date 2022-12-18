@@ -24,7 +24,7 @@ The multilingual shoutbox is fast, lightweight and user-friendly. Everything is 
 * And start installation with:  
   `https://www.mySite.com/myFolder/myIndex.php?module=CHSShoutboxAdmin`
 
-## Update from 2.0 to 2.1
+## Update from 2.x
 Upload the folder `chscore` including its contents and replace each existing file. Then upload `updateShoutbox.php`, execute and delete it again.
 
 ## FAQ
