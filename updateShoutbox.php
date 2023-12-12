@@ -3,14 +3,14 @@
  * Updater for past versions of Shoutbox.
  *
  * @author Chrissyx <chris@chrissyx.com>
- * @copyright (c) 2022 by Chrissyx
+ * @copyright (c) 2022-2023 by Chrissyx
  * @license http://creativecommons.org/licenses/by-nc-sa/3.0/ Creative Commons 3.0 by-nc-sa
  * @package CHS_Shoutbox
- * @version 2.1
+ * @version 2.1.2
  */
 function checkConvertUtf8($string)
 {
-    return mb_check_encoding($string, 'UTF-8') ? $string : utf8_encode($string);
+    return mb_check_encoding($string, 'UTF-8') ? $string : @utf8_encode($string);
 }
 
 echo('Updating...');

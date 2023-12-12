@@ -3,10 +3,10 @@
  * Shoutbox module.
  *
  * @author Chrissyx <chris@chrissyx.com>
- * @copyright (c) 2006-2022 by Chrissyx
+ * @copyright (c) 2006-2023 by Chrissyx
  * @license http://creativecommons.org/licenses/by-nc-sa/3.0/ Creative Commons 3.0 by-nc-sa
  * @package CHS_Shoutbox
- * @version 2.1.1
+ * @version 2.1.2
  */
 /**
  * Performs all shoutbox actions.
@@ -50,8 +50,19 @@ class CHSShoutbox implements CHSModule
         {
             if(($this->config['img_path'] = basename($this->config['loc_smilies']) == 'smilies.var' ? implode('/', array_slice(explode('/', $this->config['loc_smilies']), 0, -2)) : '') != '')
                 $this->config['img_path'] .= '/';
-            array_map(array($this, 'cacheSmiley'), basename($this->config['loc_smilies']) != 'smilies.var' ? array_slice(file($this->config['loc_smilies']), 1) : array_map('utf8_encode', file($this->config['loc_smilies'])));
+            array_map(array($this, 'cacheSmiley'), basename($this->config['loc_smilies']) != 'smilies.var' ? array_slice(file($this->config['loc_smilies']), 1) : array_map(array('CHSShoutbox', 'utf8_encode'), file($this->config['loc_smilies'])));
         }
+    }
+
+    /**
+     * Replacement for PHP's {@link utf8_encode()} to convert from ISO-8859-1 encoding to UTF-8.
+     *
+     * @param string $string ISO-8859-1 encoded string
+     * @return string UTF-8 encoded counterpart
+     */
+    private static function utf8_encode(string $string): string
+    {
+        return @utf8_encode($string);
     }
 
     /**
