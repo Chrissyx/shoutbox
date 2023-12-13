@@ -3,7 +3,7 @@
  * General static functions for each module with initial instructions.
  *
  * @author Chrissyx <chris@chrissyx.com>
- * @copyright (c) 2009-2022 by Chrissyx
+ * @copyright (c) 2009-2023 by Chrissyx
  * @license http://creativecommons.org/licenses/by-nc-sa/3.0/ Creative Commons 3.0 by-nc-sa
  * @package CHS_Core
  * @version 1.2
@@ -72,7 +72,7 @@ class CHSFunctions implements CHSModule
  <head>
   <title>' . $title . '</title>
   <meta name="author" content="Chrissyx" />
-  <meta name="copyright" content="&copy; 2001-2022 by Chrissyx" />
+  <meta name="copyright" content="&copy; 2001-2023 by Chrissyx" />
   <meta name="keywords" content="' . $keywords . '" />
   <meta name="description" content="' . $description . '" />
   <meta name="robots" content="all" />
@@ -185,7 +185,7 @@ class CHSFunctions implements CHSModule
 
     /**
      * Returns contents of a PHP-protected data file.
-     * 
+     *
      * @param string $filename Name of data file
      * @param string $callback Callback to be executed on each file entry
      * @return array|bool File contents or false in case of stated file not found
@@ -197,7 +197,7 @@ class CHSFunctions implements CHSModule
 
     /**
      * Writes contents of an array to a PHP-protected data file.
-     * 
+     *
      * @param string $filename Name of data file
      * @param mixed $contents Single value or array with contents to be written
      * @return int|bool Number of bytes that were written to the file or false on failure
@@ -234,7 +234,7 @@ class CHSFunctions implements CHSModule
 
     /**
      * Verfies a picture for known / supported extension.
-     * 
+     *
      * @param mixed $filename Name of image file with extension
      * @return bool Valid / supported image file
      */
@@ -245,7 +245,7 @@ class CHSFunctions implements CHSModule
 
     /**
      * Removes backslashes and converts the common HTML sepecial chars to entities.
-     * 
+     *
      * @param string $string,... The string(s)
      * @return mixed Edited single string or array with strings
      */
