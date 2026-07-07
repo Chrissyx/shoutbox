@@ -291,10 +291,11 @@ function setShoutSmiley(smiley)
      */
     public function onLoad()
     {
-        if(isset($_GET['module']) && $_GET['module'] == get_class() && in_array(($action = isset($_GET['action']) ? $_GET['action'] : ''), array('deleteShout', 'moreSmilies', 'showArchive', 'outputCAPTCHA')))
+        if(isset($_GET['module']) && $_GET['module'] == get_class($this) && in_array(($action = isset($_GET['action']) ? $_GET['action'] : ''), array('deleteShout', 'moreSmilies', 'showArchive', 'outputCAPTCHA')))
         {
             Loader::execute('CHSFunctions');
-            exit($this->$action());
+            $this->$action();
+            exit;
         }
     }
 }

@@ -488,7 +488,8 @@ foreach($this->chsLanguage->getLangCodes() as $curCode)
 
 <?php
                     CHSFunctions::printTail('CHSShoutbox', 'common');
-                    exit(session_unset()); //Kill off whole session to re-init the Core to avoid issues with cached onLoad infos
+                    session_unset(); //Kill off whole session to re-init the Core to avoid issues with cached onLoad infos
+                    exit;
                 }
             }
             if(isset($msg))
@@ -544,7 +545,7 @@ foreach($this->chsLanguage->getLangCodes() as $curCode)
      */
     public function onLoad()
     {
-        if(isset($_GET['module']) && $_GET['module'] == get_class())
+        if(isset($_GET['module']) && $_GET['module'] == get_class($this))
         {
             Loader::execute('CHSFunctions');
             $this->action = isset($_GET['action']) ? $_GET['action'] : (isset($_POST['action']) ? $_POST['action'] : '');
@@ -561,7 +562,8 @@ foreach($this->chsLanguage->getLangCodes() as $curCode)
                 $this->curPassHash = @current($passHashes = CHSFunctions::getPHPDataFile(substr($this->curPassFile = current(glob(Loader::getDataPath() . '*CHSShoutbox.dat.php')), 0, -4))) or exit($this->chsLanguage->getString('error_no_user', 'admin'));
                 $this->newPassHash = next($passHashes);
             }
-            exit($this->execute());
+            $this->execute();
+            exit;
         }
     }
 }
