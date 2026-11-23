@@ -45,5 +45,4 @@ Upload the folder `chscore` including its contents and replace each existing fil
 © 2006-2023 by Chrissyx  
 Powered by V4 LeetCore Technology  
 https://www.chrissyx.de/  
-https://www.chrissyx.com/  
-[![Twitter Follow](https://img.shields.io/twitter/follow/CXHomepage?style=social)](https://twitter.com/intent/follow?screen_name=CXHomepage)
+https://www.chrissyx.com/

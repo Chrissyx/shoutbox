@@ -6,7 +6,7 @@
  * @copyright (c) 2006-2022 by Chrissyx
  * @license http://creativecommons.org/licenses/by-nc-sa/3.0/ Creative Commons 3.0 by-nc-sa
  * @package CHS_Shoutbox
- * @version 2.1
+ * @version 2.1.3
  */
 /**
  * Installs and manages the shoutbox.
@@ -72,13 +72,13 @@ class CHSShoutboxAdmin implements CHSModule
             if(isset($_POST['shoutpw']))
             {
                 //Check for new pass first
-                if($this->newPassHash && CHSFunctions::getHash($_POST['shoutpw']) == $this->newPassHash)
+                if($this->newPassHash && hash_equals($this->newPassHash, CHSFunctions::getHash($_POST['shoutpw'])))
                 {
                     $this->curPassHash = $this->newPassHash;
                     CHSFunctions::setPHPDataFile(substr($this->curPassFile, 0, -4), $this->newPassHash);
                 }
                 //Check normal pass now
-                if(CHSFunctions::getHash($_POST['shoutpw']) == $this->curPassHash)
+                if(hash_equals($this->curPassHash, CHSFunctions::getHash($_POST['shoutpw'])))
                 {
                     $_SESSION['shoutpw'] = CHSFunctions::getHash($_POST['shoutpw']);
                     unset($_POST['shoutpw']);
@@ -106,7 +106,7 @@ class CHSShoutboxAdmin implements CHSModule
 
 # Administration #
             case 'admin':
-            if(!isset($_SESSION['shoutpw']) || $_SESSION['shoutpw'] != $this->curPassHash)
+            if(!isset($_SESSION['shoutpw']) || hash_equals($this->curPassHash, $_SESSION['shoutpw']))
                 exit($this->chsLanguage->getString('error_not_allowed', 'admin'));
             $settings = Loader::getModule('CHSConfig')->getConfigSet('CHSShoutbox');
             CHSFunctions::printHead('CHS &ndash; Shoutbox: ' . $this->chsLanguage->getString('title', 'admin'), 'Shoutbox, CHS, ' . $this->chsLanguage->getString('title', 'admin') . ', Chrissyx', $this->chsLanguage->getString('descr', 'admin'), $this->chsLanguage->getString('charset', 'common'), $this->chsLanguage->getLangCode());
